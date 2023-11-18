@@ -18,7 +18,11 @@ class ForwardRequestToHostMiddleware
         $host = LogViewer::getHost($hostIdentifier);
 
         if ($host) {
-            $actionPath = Str::replaceFirst(config('log-viewer.route_path'), '', $request->path());
+            //old
+            //$actionPath = Str::replaceFirst(config('log-viewer.route_path'), '', $request->path());
+            // new
+            $actionPath =  ltrim($request->path(),config('log-viewer.route_path'));
+            
             $url = $host->host.$actionPath.(! empty($query) ? '?'.http_build_query($query) : '');
             $headers = array_merge([
                 'X-Forwarded-Host' => $request->getHost(),
